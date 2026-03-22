@@ -1,0 +1,66 @@
+# AutoSignals Swarm Configuration
+# ================================
+# Edit this file to customize swarm behavior.
+
+[swarm]
+# Number of parallel research workers
+num_workers = 4
+
+# Coding agent to use: "claude" or "codex"
+agent_type = "claude"
+
+# How often the leader checks worker results (seconds)
+poll_interval_sec = 1800
+
+# Cross-pollinate winning configs every N rounds
+cross_pollination_interval = 3
+
+# Maximum rounds before stopping (null = unlimited)
+# max_rounds = 20
+
+# Timeout per experiment in seconds
+experiment_timeout_sec = 300
+
+
+# Research Directions
+# ===================
+# Each direction becomes a hypothesis assigned to a worker.
+# Workers rotate through directions across rounds.
+
+[[research_directions]]
+id = "momentum"
+description = "Optimize momentum-based signals — lookback period, skip window, regime sensitivity"
+instructions = """
+Focus on momentum factor: try different lookback periods (60-252 days),
+skip recent 1-5 days, adjust regime threshold. Keep it simple.
+Economic rationale: momentum captures trending behavior, skip avoids
+short-term mean reversion.
+"""
+
+[[research_directions]]
+id = "value"
+description = "Develop value-based scoring using fundamental data"
+instructions = """
+Build a value score: earnings yield + FCF yield + low P/B.
+Use get_fundamentals() to access 64 fundamental fields.
+Score stocks by cheapness relative to quality.
+Economic rationale: cheap quality stocks are mispriced by the market.
+"""
+
+[[research_directions]]
+id = "quality"
+description = "Build quality factor from profit margins, ROE, and balance sheet strength"
+instructions = """
+Create a quality score: high net profit margin + high gross margin + low debt ratio.
+Use get_fundamentals(). Quality should filter OUT bad stocks, not just rank.
+Economic rationale: high-quality businesses compound better and survive downturns.
+"""
+
+[[research_directions]]
+id = "ensemble"
+description = "Combine momentum + value + quality into a multi-factor ensemble"
+instructions = """
+Build an ensemble: equal-weight or regime-dependent weighting of momentum,
+value, and quality factors. More momentum in bull markets, more value in bears.
+Target IS-OOS gap < 0.25. Keep total parameter count under 15.
+"""

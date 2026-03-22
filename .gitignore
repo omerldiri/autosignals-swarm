@@ -1,0 +1,24 @@
+# Swarm runtime state
+.swarm/
+.venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Logs
+*.log
+logs/
+
+# Data (large files — download via prepare.py)
+data/
+
+# IDE
+.claude/
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
